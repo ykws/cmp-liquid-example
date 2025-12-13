@@ -5,7 +5,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -73,7 +73,7 @@ fun App() {
 @Composable
 fun HomeScreen(paddingValues: PaddingValues) {
     var showContent by remember { mutableStateOf(false) }
-    Column(
+    Box(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
             .fillMaxSize()
@@ -81,34 +81,31 @@ fun HomeScreen(paddingValues: PaddingValues) {
                 top = paddingValues.calculateTopPadding(),
                 start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                 end = paddingValues.calculateEndPadding(LocalLayoutDirection.current)
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            )
     ) {
-        Button(onClick = { showContent = !showContent }) {
-            Text("Click me!")
+        AnimatedVisibility(
+            visible = showContent,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it }),
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            val greeting = remember { Greeting().greet() }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(painterResource(Res.drawable.compose_multiplatform), null)
+                Text("Compose: $greeting")
+            }
         }
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Button(
+            onClick = { showContent = !showContent },
+            modifier = Modifier.align(Alignment.Center)
         ) {
-            AnimatedVisibility(
-                visible = showContent,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+            Text("Click me!")
         }
     }
 }
