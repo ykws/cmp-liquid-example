@@ -3,8 +3,9 @@ import SwiftUI
 import ComposeApp
 
 struct ComposeView: UIViewControllerRepresentable {
+    let viewController: () -> UIViewController
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        return viewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
@@ -12,10 +13,17 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     var body: some View {
-        ComposeView()
-            .ignoresSafeArea()
+        TabView {
+            ComposeView(viewController: HomeViewControllerKt.homeViewController)
+                .ignoresSafeArea()
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+            ComposeView(viewController: SettingsViewControllerKt.settingsViewController)
+                .ignoresSafeArea()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+        }
     }
 }
-
-
-
