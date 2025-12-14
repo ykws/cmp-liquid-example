@@ -12,6 +12,14 @@ struct ComposeView: UIViewControllerRepresentable {
 }
 
 struct ContentView: View {
+    init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.systemGray6
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house.fill") {
