@@ -14,16 +14,15 @@ struct ComposeView: UIViewControllerRepresentable {
 struct ContentView: View {
     var body: some View {
         TabView {
-            ComposeView(viewController: HomeViewControllerKt.homeViewController)
-                .ignoresSafeArea()
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
-            ComposeView(viewController: SettingsViewControllerKt.settingsViewController)
-                .ignoresSafeArea()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
+            Tab("Home", systemImage: "house.fill") {
+                ComposeView(viewController: HomeViewControllerKt.homeViewController)
+                    .ignoresSafeArea()
+            }
+
+            Tab("Settings", systemImage: "gear") {
+                ComposeView(viewController: SettingsViewControllerKt.settingsViewController)
+                    .ignoresSafeArea()
+            }
         }
     }
 }
